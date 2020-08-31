@@ -1,6 +1,5 @@
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 class CountVotes implements Runnable {
     int [] votes;
@@ -42,6 +41,8 @@ public class multiThreading {
     }
 
     public static void main(String[] args) {
+
+        System.out.println("Generating 240 votes for three students A B and C");
         // Generate 240 random votes for three students
         int [] votes = generateVotes(240, 3);
 
@@ -55,6 +56,8 @@ public class multiThreading {
         Thread t2 = new Thread(counter2);
         Thread t3 = new Thread(counter3);
         Thread t4 = new Thread(counter4);
+
+        System.out.println("Creating four threads to count votes ...");
 
         // Start all threads
         t1.start();
@@ -74,12 +77,17 @@ public class multiThreading {
             System.out.println("Error encountered : " + ex + "\n");
         }
 
+        System.out.println("All threads have completed execution, now counting results");
+
         synchronized(finalCounts){
             for (int i = 0; i < 3; i++){
                 finalCounts[i] += counter1.counts[i] + counter2.counts[i] + counter3.counts[i] + counter4.counts[i];
             }
         }
 
-        System.out.println(Arrays.toString(finalCounts));
+        System.out.println("Final Results are: ");
+        System.out.println("A : " + finalCounts[0] + " Votes");
+        System.out.println("B : " + finalCounts[1] + " Votes");
+        System.out.println("C : " + finalCounts[2] + " Votes");
     }
 }
