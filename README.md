@@ -138,7 +138,7 @@ Programs for fulfilment of lab component for Java course in my university
       // redunant
       ```
     
-      
+  
 - Static initilization blocks
   - Perform one-time type initialization
     - Execute before type's first use
@@ -814,7 +814,93 @@ class TestNestedInterface1 implements Showable.Message
 
   - If we try to compile this, an exception will be thrown by `FileWriter` constructor.
   - The two exceptions thrown here are `IOException` and `IndexOutOfBoundsException` .
-  - The exception thrown by the constructor, `IOException`, is a checked exception, and the one thrown by the `get` method, `IndexOutOfBoundsException`, is an unchecked exception, thus the compiler only prints an error message about the exception thrown by `FileWriter` and not the `get` method
+  - The exception thrown by the constructor, `IOException`, is a checked exception, and the one thrown by the `get` method, `IndexOutOaa`
+  - `fBoundsException`, is an unchecked exception, thus the compiler only prints an error message about the exception thrown by `FileWriter` and not the `get` method
 
-  
+  ### The try and catch blocks
 
+  - The code that might throw exception is enclosed in `try` block.
+
+  - Adding try to the previous example:
+
+    ```java
+    private List<Integer> list;
+    private static final int SIZE = 10;
+    
+    public void writeList() {
+        PrintWriter out = null;
+        try {
+            System.out.println("Entered try statement");
+            out = new PrintWriter(new FileWriter("OutFile.txt"));
+            for (int i = 0; i < SIZE; i++) {
+                out.println("Value at: " + i + " = " + list.get(i));
+            }
+        }
+        catch and finally blocks  . . .
+    }
+    ```
+
+  - Exception handlers are associated with try block using one or more `catch` blocks.
+
+  - For the above `try` the `catch` can be written as follows:
+
+    ```java
+    try {
+    
+    } catch (IndexOutOfBoundsException e) {
+        System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+    } catch (IOException e) {
+        System.err.println("Caught IOException: " + e.getMessage());
+    }
+    ```
+
+  - The catch block can be used to catch more than one exceptions also, like so:
+
+    ```java
+    catch (IOException|SQLException ex) {
+        logger.log(ex);
+        throw ex;
+    }
+    ```
+
+  - If a `catch` block handles more than one exception type, then the `catch` parameter is implicitly `final`. In this example, the `catch` parameter `ex` is `final` and therefore you cannot assign any values to it within the `catch` block.
+
+  - The finally block always executes when try block exits. Finally executes even if exception occurs. But `finally` is useful for more than just exception handling — it allows the programmer to avoid having cleanup code accidentally bypassed by a `return`, `continue`, or `break`. 
+
+  - Putting cleanup code in a `finally` block is always a good practice, even when no exceptions are anticipated.
+
+  - The following `finally` block for the `writeList` method cleans up and then closes the `PrintWriter`.
+
+    ```java
+    finally {
+        if (out != null) { 
+            System.out.println("Closing PrintWriter");
+            out.close(); 
+        } else { 
+            System.out.println("PrintWriter not open");
+        } 
+    } 
+    ```
+
+  - The `finally` block is a key tool for preventing resource leaks. When closing a file or otherwise recovering resources, place the code in a `finally` block to ensure that resource is *always* recovered.
+
+  - `try-with-resources  ` is a `try` statement that declares one or more resources. 
+
+  -  A *resource* is an object that must be closed after the program is finished with it.
+
+  -  The `try`-with-resources statement ensures that each resource is closed at the end of the statement.
+
+  - Any object that implements `java.lang.AutoCloseable`, which includes all objects which implement `java.io.Closeable`, can be used as a resource.
+
+  - Example:
+
+    ```java
+    static String readFirstLineFromFile(String path) throws IOException {
+        try (BufferedReader br =
+                       new BufferedReader(new FileReader(path))) {
+            return br.readLine();
+        }
+    }
+    ```
+
+    
