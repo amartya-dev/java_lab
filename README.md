@@ -734,3 +734,87 @@ class TestNestedInterface1 implements Showable.Message
   javac -d directory javafilename
   ```
 
+
+
+# Exception Handling
+
+- **Definition:** An *exception* is an event, which occurs during the execution of a program, that disrupts the normal flow of the program's instructions.
+- During an error, an object is created and handed to the runtime which contains info on type of exception, state of program etc.
+- Creating an exception object and handing it to the system is called *throwing an exception*
+- List of methods called to get to the method where the error occurred are known as the *call stack*
+- <img src="https://docs.oracle.com/javase/tutorial/figures/essential/exceptions-callstack.gif" alt="The call stack showing three method calls, where the first method called has the exception handler." />
+
+- The runtime system searches the call stack for a method that contains a block of code that can handle the exception. This block of code is called an *exception handler*. 
+- ![The call stack showing three method calls, where the first method called has the exception handler.](https://docs.oracle.com/javase/tutorial/figures/essential/exceptions-errorOccurs.gif)
+- The exception handler chosen is said to *catch the exception*
+
+## Catch or Specify Requirement
+
+- The code that might throw exceptions must be enclosed by wither of the following:
+  - A `try` statement that catches the exception. The `try` must provide a handler for the exception, as described in [Catching and Handling Exceptions](https://docs.oracle.com/javase/tutorial/essential/exceptions/handling.html).
+  - A method that specifies that it can throw the exception. The method must provide a `throws` clause that lists the exception, as described in [Specifying the Exceptions Thrown by a Method](https://docs.oracle.com/javase/tutorial/essential/exceptions/declaring.html).
+- Code that fails to honor the Catch or Specify Requirement will not compile.
+
+## Three Kinds of Exceptions
+
+### Checked Exception
+
+- These are exceptional conditions that a well-written application should anticipate and recover from.
+- Checked exceptions *are subject* to the Catch or Specify Requirement. All exceptions are checked exceptions, except for those indicated by `Error`, `RuntimeException`, and their subclasses.
+
+### Error
+
+- These are exceptional conditions that are external to the application, and that the application usually cannot anticipate or recover from. 
+- Errors *are not subject* to the Catch or Specify Requirement. Errors are those exceptions indicated by `Error` and its subclasses.
+
+### Runtime Exception
+
+- These are exceptional conditions that are internal to the application, and that the application usually cannot anticipate or recover from.
+- These usually indicate programming bugs, such as logic errors or improper use of an API.
+- Runtime exceptions *are not subject* to the Catch or Specify Requirement. Runtime exceptions are those indicated by `RuntimeException` and its subclasses.
+
+- Errors and runtime exceptions are collectively known as *unchecked exceptions*.
+
+## Catching and Handling Exceptions
+
+- The three exception handlers are the `try`, `catch`, and `finally` blocks.
+
+- Example
+
+  ```java
+  // Note: This class will not compile yet.
+  import java.io.*;
+  import java.util.List;
+  import java.util.ArrayList;
+  
+  public class ListOfNumbers {
+  
+      private List<Integer> list;
+      private static final int SIZE = 10;
+  
+      public ListOfNumbers () {
+          list = new ArrayList<Integer>(SIZE);
+          for (int i = 0; i < SIZE; i++) {
+              list.add(new Integer(i));
+          }
+      }
+  
+      public void writeList() {
+  	// The FileWriter constructor throws IOException, which must be caught.
+          PrintWriter out = new PrintWriter(new FileWriter("OutFile.txt"));
+  
+          for (int i = 0; i < SIZE; i++) {
+              // The get(int) method throws IndexOutOfBoundsException, which must be caught.
+              out.println("Value at: " + i + " = " + list.get(i));
+          }
+          out.close();
+      }
+  }
+  ```
+
+  - If we try to compile this, an exception will be thrown by `FileWriter` constructor.
+  - The two exceptions thrown here are `IOException` and `IndexOutOfBoundsException` .
+  - The exception thrown by the constructor, `IOException`, is a checked exception, and the one thrown by the `get` method, `IndexOutOfBoundsException`, is an unchecked exception, thus the compiler only prints an error message about the exception thrown by `FileWriter` and not the `get` method
+
+  
+
