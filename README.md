@@ -191,6 +191,165 @@ Programs for fulfilment of lab component for Java course in my university
 - The call to other overloaded method does not have to be the first line in the overloaded method while in constructor overloading it has to be.
 - When the compiler cannot find an exact match for the call of the method due to the use of datatypes, the compiler will start looking for opportunities with type conversions eg- short can be converted to int.
 
+# Interfaces
+
+- Interfaces are used for full abstraction.
+
+- The variables in an interface are public, static and final by default.
+
+- Interface is a reference type similar to a class, that contains only constants, method signatures, default methods, and static methods.
+
+- Interfaces cannot be instantiated, they can only be implemented by classes or extended by other interfaces.
+
+- Example:
+
+  ```java
+  public interface OperateCar {
+  
+     // constant declarations, if any
+  
+     // method signatures
+     
+     // An enum with values RIGHT, LEFT
+     int turn(Direction direction,
+              double radius,
+              double startSpeed,
+              double endSpeed);
+     int changeLanes(Direction direction,
+                     double startSpeed,
+                     double endSpeed);
+     int signalTurn(Direction direction,
+                    boolean signalOn);
+     int getRadarFront(double distanceToCar,
+                       double speedOfCar);
+     int getRadarRear(double distanceToCar,
+                      double speedOfCar);
+           ......
+     // more method signatures
+  }
+  ```
+
+- To use an interface, there must be a class that implements the interface, example:
+
+  ```java
+  public class OperateBMW760i implements OperateCar {
+  
+      // the OperateCar method signatures, with implementation --
+      // for example:
+      int signalTurn(Direction direction, boolean signalOn) {
+         // code to turn BMW's LEFT turn indicator lights on
+         // code to turn BMW's LEFT turn indicator lights off
+         // code to turn BMW's RIGHT turn indicator lights on
+         // code to turn BMW's RIGHT turn indicator lights off
+      }
+  
+      // other members, as needed -- for example, helper classes not 
+      // visible to clients of the interface
+  }
+  ```
+
+- When a class implements an interface, it must provide a method body for each of the methods declared in the interface.
+
+- Inheritance in interfaces: Example: 
+
+  ```java
+  interface Inf1{
+     public void method1();
+  }
+  interface Inf2 extends Inf1 {
+     public void method2();
+  }
+  public class Demo implements Inf2{
+     /* Even though this class is only implementing the
+      * interface Inf2, it has to implement all the methods 
+      * of Inf1 as well because the interface Inf2 extends Inf1
+      */
+      public void method1(){
+  	System.out.println("method1");
+      }
+      public void method2(){
+  	System.out.println("method2");
+      }
+      public static void main(String args[]){
+  	Inf2 obj = new Demo();
+  	obj.method2();
+      }
+  }
+  ```
+
+- Interface cannot be declared as private, protected or transient.
+
+- All the interface methods are by default **abstract and public**.
+
+- Variables declared in interface are **public, static and final** by default.
+
+- Interface variables must be initialized at the time of declaration otherwise compiler will throw an error.
+
+  ```java
+  interface Try
+  {
+        int x;//Compile-time error
+  }
+  ```
+
+- Inside any implementation class, you cannot change the variables declared in interface because by default, they are public, static and final. 
+
+- A class cannot implement two interfaces that have methods with same name but different return type.
+
+  ```java
+  interface A
+  {
+     public void aaa();
+  }
+  interface B
+  {
+     public int aaa();
+  }
+  
+  class Central implements A,B
+  {
+  
+     public void aaa() // error
+     {
+     }
+     public int aaa() // error
+     {
+     }
+     public static void main(String args[])
+     {
+  
+     }
+  }
+  ```
+
+- Interfaces are used to support multiple inheritance in Java
+
+## Nested Interfaces
+
+An interface which is declared inside another interface or class is called [nested](https://beginnersbook.com/2016/03/nested-or-inner-interfaces-in-java/) interface. They are also known as inner interface. For example Entry interface in collections framework is declared inside Map interface, that’s why we don’ use it directly, rather we use it like this: `Map.Entry`.
+
+```java
+interface Showable {  
+  void show();  
+  interface Message {  
+    	void msg();  
+	}  
+}
+
+class TestNestedInterface1 implements Showable.Message
+{  
+ 	public void msg(){System.out.println("Hello nested interface");}  
+  
+ 	public static void main(String args[]){  
+  		Showable.Message message=new TestNestedInterface1();//upcasting here  
+		message.msg();  
+	}  
+} 
+```
+
+- **Upcasting:** Upcasting is the [typecasting](https://www.geeksforgeeks.org/type-conversion-java-examples/) **of a child object to a parent object**. Upcasting can be done implicitly. Upcasting gives us the flexibility to access the parent class members but it is not possible to access all the child class members using this feature. Instead of all the members, we can access some specified members of the child class. For instance, we can access the overridden methods.
+- **Downcasting:** Similarly, downcasting means the typecasting of a **parent object to a child object**. Downcasting cannot be implicitly.
+
 # Inheritance concepts
 
 ## Method overriding
@@ -387,3 +546,191 @@ Programs for fulfilment of lab component for Java course in my university
   The method `Mustang.identifyMyself` returns the string `I am a horse.` The class `Mustang` inherits the method `identifyMyself` from the class `Horse`, which overrides the abstract method of the same name in the interface `Mammal`.
 
   **Note**: Static methods in interfaces are never inherited.
+
+- Final keyword can be used to prevent overriding
+
+
+
+# Packages
+
+- Group of related types are bundled into packages.
+- **Definition:** A *package* is a grouping of related types providing access protection and name space management. Note that *types* refers to classes, interfaces, enumerations, and annotation types. Enumerations and annotation types are special kinds of classes and interfaces, respectively
+
+## Creating a package
+
+- To create a package, we name the package, and put a package statement with that name at top of every source file that contains its types.
+
+- The package statement has to be the first line in the source files.
+
+- If you put multiple types in a single source file, only one can be `public`, and it must have the same name as the source file. 
+
+- Example:
+
+  ```java
+  //in the Draggable.java file
+  package graphics;
+  public interface Draggable {
+      . . .
+  }
+  
+  //in the Graphic.java file
+  package graphics;
+  public abstract class Graphic {
+      . . .
+  }
+  
+  //in the Circle.java file
+  package graphics;
+  public class Circle extends Graphic
+      implements Draggable {
+      . . .
+  }
+  
+  //in the Rectangle.java file
+  package graphics;
+  public class Rectangle extends Graphic
+      implements Draggable {
+      . . .
+  }
+  
+  //in the Point.java file
+  package graphics;
+  public class Point extends Graphic
+      implements Draggable {
+      . . .
+  }
+  
+  //in the Line.java file
+  package graphics;
+  public class Line extends Graphic
+      implements Draggable {
+      . . .
+  }
+  ```
+
+## Naming a package
+
+- It is likely that many programmers will use same name for different types (classes and interfaces).
+
+- Example: the ```Rectangle``` class in the above example is also present in the ```java.awt``` package, Java still allows the names of the classes to be same if they are in different packages.
+
+- The fully qualified name of each `Rectangle` class includes the package name. That is, the fully qualified name of the `Rectangle` class in the `graphics` package is `graphics.Rectangle`, and the fully qualified name of the `Rectangle` class in the `java.awt` package is `java.awt.Rectangle`.
+
+  ### Naming conventions
+
+  - Package names are written in all lower case to avoid confusion with class names and interfaces.
+
+  - Companies use their reserved domain name to begin their package names - ```com.example.mypackage```
+
+  - Packages in java begin with ```java.``` or ```javax.```
+
+  - The package name does not allow hyphen or other special characters
+
+  - If package name begins with reserved keywords or digits or characters the convention is to add an underscore with the name:
+
+    | Domain Name                   | Package Name Prefix           |
+    | ----------------------------- | ----------------------------- |
+    | `hyphenated-name.example.org` | `org.example.hyphenated_name` |
+    | `example.int`                 | `int_.example`                |
+    | `123name.example.com`         | `com.example._123name`        |
+
+## Using package members
+
+- The types that comprise a package are called package members
+
+- To use a `public` package member from outside its package, you must do one of the following:
+
+  - Refer to the member by its fully qualified name
+  - Import the package member
+  - Import the member's entire package
+
+  ### Refer to the member by its fully qualified name
+
+  - If we try to use a member from different package and that package has not been imported, we need to use the fully qualified name for it example:
+
+    ```java
+    graphics.Rectangle
+    ```
+
+  - This name can also be used to create an instance of ```graphics.Rectangle``` :
+
+    ```java
+    graphics.Rectangle myRect = new graphics.Rectangle();
+    ```
+
+  - This is ok for infrequent use.
+
+  ### Importing a Package Member
+
+  - To import a specific member, put an import statement at the beginning of file.
+
+  - Example:
+
+    ```java
+    import graphics.Rectangle;
+    
+    // Now you can refer to the Rectangle class by its simple name.
+    
+    Rectangle myRectangle = new Rectangle();
+    ```
+
+  ### Importing an Entire package
+
+  - To import all types contained in a package, we use (*) wildcard character
+
+  - Example:
+
+    ```java
+    import graphics.*;
+    
+    // Now you can refer to any class or interface in the graphics package by its simple name.
+    
+    Circle myCircle = new Circle();
+    Rectangle myRectangle = new Rectangle();
+    ```
+
+  - (*) cannot be used for subset of classes in a package, example:
+
+    ```java
+    // does not work
+    import graphics.A*;
+    ```
+
+  - Public nested class of an enclosing class can be imported. Example: if the ```graphics.Rectangle``` class contained useful nested classes, such as `Rectangle.DoubleWide` and `Rectangle.Square`, you could import `Rectangle` and its nested classes by using the following *two* statements.
+
+    ```java
+    import graphics.Rectangle;
+    
+    // This will not import Rectangle
+    import graphics.Rectangle.*;
+    ```
+
+  - Java automatically imports ```java.lang``` and current package (the package of the current file)
+
+  ### Apparent Hierarchies of Packages
+
+  - Packages might appear to be hierarchical but they are seldom not. Example Importing `java.awt.*` imports all of the types in the `java.awt` package, but it *does not import* `java.awt.color`, `java.awt.font`, or any other `java.awt.xxxx` packages. 
+
+  - The `java.awt.color` package, the `java.awt.font` package, and other `java.awt.xxxx` packages are *not included* in the `java.awt` package.
+
+  - For using both color and awt, we need to import both:
+
+    ```java
+    import java.awt.*;
+    import java.awt.color.*;
+    ```
+
+  ### Name Ambiguities
+
+  - If there are multiple packages with same types' names, it is recommended to use the fully qualified name Example:
+
+    ```java
+    graphics.Rectangle rect;
+    ```
+
+- A package can be created and later compiled using command line by the following command:
+
+  ```bash
+  javac -d directory javafilename
+  ```
+
